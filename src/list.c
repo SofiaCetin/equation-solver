@@ -1,10 +1,10 @@
 #include "list.h"
 
-int isListValid(TokenList* list){
-    return list != NULL;
+inline int isListValid(TokenList* list){
+    return list != NULL && list->first != NULL;
 }
 
-int isElValid(TokenEl* el){
+inline int isElValid(TokenEl* el){
     return el != NULL && el->value != NULL;
 }
 
@@ -19,10 +19,35 @@ TokenList* create_list(TokenEl* first){
     return res;
 }
 
-void cons(TokenList* list, TokenEl* el){
+TokenEl* create_el(char* value, Token type){
+    if (value == NULL){
+        return NULL;
+    }
+
+    TokenEl* res = malloc(sizeof(TokenEl));
+    if (res == NULL){
+        return NULL;
+    }
+    res->value = value;
+    res->type = type;
+    res->next = NULL;
+
+    return res;
+}
+
+void append(TokenList* list, TokenEl* el){
     if (!isListValid(list) || !isElValid(el)){
         return;
     }
-    el->next = list->first;
-    list->first = el;
+    TokenEl* current = list->first;
+    while (current->next != NULL){
+        current = current->next;
+    }
+    current->next = el;
+    el->next = NULL;
+    list->len++;
+}
+
+void show_list(TokenList* list){
+    if (!isListValid(list) || )
 }

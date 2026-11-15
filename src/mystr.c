@@ -4,17 +4,18 @@ const char NUMBERS[] = ".0123456789";
 const char ALPHABET[] = "abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ";
 const char OPERANDS[] = "+-*/";
 
-int str_in(const char* s, char c){
+int count_char(const char* s, char c){
     if (s == NULL){
         return 1;
     }
+    int res = 0;
     while(*s != '\0'){
         if (*s == c){
-            return 0;
+            res++;
         }
         s++;
     }
-    return 1;
+    return res;
 }
 
 int any_c_in(const char* str, const char* input){
