@@ -2,6 +2,7 @@
 #define LIST_H
 
 #include <stdlib.h>
+#include <stdio.h>
 
 typedef enum {
 
@@ -10,12 +11,12 @@ typedef enum {
     syntax checking:
     */
 
-    UNDEF,
-    T_NUMBER,
-    T_ALPHA,
-    T_LPAR,
-    T_RPAR,
-    T_OPERAND,
+    UNDEF,      // i0
+    T_NUMBER,   // i1
+    T_ALPHA,    // i2
+    T_LPAR,     // i3
+    T_RPAR,     // i4
+    T_OPERAND,  // i5
 
     /* 
     After syntax has been successfully checked, 
@@ -23,34 +24,30 @@ typedef enum {
     as following:
     */
 
-    T_VARIABLE,
-    T_CONSTANT,
-    T_FUNCTION,
-    T_EQUAL,
-    T_SUM,
-    T_MINUS,
-    T_MULT,
-    T_DIV,
-    T_POW
+    T_VARIABLE, // i6
+    T_CONSTANT, // i7
+    T_FUNCTION, // i8
+    T_EQUAL,    // i9
+    T_SUM,      // i10
+    T_MINUS,    // i11
+    T_MULT,     // i12
+    T_DIV,      // i13
+    T_POW       // i14
 
 }Token;
 
-typedef struct TokenEl{
+struct TokenCell{
     char* value;
     Token type;
-    struct TokenEl* next;
-}TokenEl;
+    struct TokenCell* next;
+    struct TokenCell* prev;
+};
 
-typedef struct TokenList{
-    TokenEl* first;
-    size_t len;
-}TokenList;
+typedef struct TokenCell* List;
 
-TokenList* create_list(TokenEl* first);
-TokenEl* create_el(char* value, Token type);
-void cons(TokenList* list, TokenEl* el);
-int isListValid(TokenList* list);
-int isElValid(TokenEl* el);
-void show_list(TokenList* list);
+
+List new_list(void);
+void append(List l, char* value, Token type);
+void show_list(List l);
 
 #endif
