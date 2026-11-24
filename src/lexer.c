@@ -23,35 +23,41 @@ Token pre_token_type(char c){
 
 }
 
-TokenList* pre_tokenization(char* expr){
+List pre_tokenization(char* expr){
     if (expr == NULL || str_len(expr) < 1){
         return NULL;
     }
 
-    Token first_type = pre_token_type(*expr);
-    TokenEl* first = create_el(*expr, first_type);
-    if (!isElValid(first)){
-        return NULL;
-    }
+    Token type = pre_token_type(*expr);
 
-    TokenList* res = create_list(first);
-    if (!isListValid(res)){
+    List res = new_list();
+    char* str = char_to_str(*expr);
+    if (res == NULL || str == NULL){
         return NULL;
     }
+    append(res, str, type);
     expr++;
 
     while(*expr != '\0'){
         Token type = pre_token_type(*expr);
-        TokenEl* token = create_el(*expr, type);
-        if (!isElValid(token)){
+        char* str = char_to_str(*expr);
+        if (res == NULL || str == NULL){
             return NULL;
         }
-        append(res, token);
+        append(res, str, type);
+        expr++;
     }
 
     return res;
 }
 
 int main(void){
+    List test = pre_tokenization("ax+b");
+    if (test == NULL){
+        return 1;
+    }
+    show_list(test);
+    char* test3 = strip("b o njour");
+    printf("%s", test3);
     return 0;
 }

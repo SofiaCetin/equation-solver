@@ -5,7 +5,7 @@
 #include "list.h"
 #include "mystr.h"
 
-
-TokenList* tokenize(char* expr);
+Token pre_token_type(char c);
+List pre_tokenization(char* expr);
 
 #endif
