@@ -7,7 +7,8 @@ typedef long double Real;
 
 typedef struct MathFunction{
     const char* name;
-    Real (*function)(Real);
+    Real (*function)(const Real *args);
+    int argc;
 }MathFunction;
 
 typedef struct MathConstant{
