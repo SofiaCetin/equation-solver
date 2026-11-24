@@ -4,6 +4,14 @@ const char NUMBERS[] = ".0123456789";
 const char ALPHABET[] = "abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ";
 const char OPERANDS[] = "+-*/";
 
+char* new_empty_str(void){
+    char* res = malloc(sizeof(char));
+    if (res == NULL){
+        return NULL;
+    }
+    res[0] = '\0';
+    return res;
+}
 int count_char(const char* s, char c){
     if (s == NULL){
         return 1;
@@ -23,8 +31,9 @@ int any_c_in(const char* str, const char* input){
         return 1;
     }
     size_t i;
+    size_t len = str_len(str);
     while(*input != '\0'){
-        for(i = 0; i < len(str) - 1; i++){
+        for(i = 0; i < len - 1; i++){
             if (*(str + i) == *input){
                 return 0;
             }
@@ -32,7 +41,7 @@ int any_c_in(const char* str, const char* input){
         input++;
     }
     return 1;
-};
+}
 
 
 size_t str_len(const char* s){
@@ -66,13 +75,12 @@ char* detect_number(const char* expr){
         return NULL;
     }
 
-    char* res = malloc(sizeof(char));
+    char* res = new_empty_str();
     if (res == NULL){
         return NULL;
     };
 
-    *res = '\0';
-    while(*(expr) != '\0' && str_in(NUMBERS, *(expr)) == 0){
+    while(*(expr) != '\0' && count_char(NUMBERS, *expr) != 0){
         char* new = str_add(res, *(expr));
         if (new == NULL){
             free(res);
@@ -81,5 +89,39 @@ char* detect_number(const char* expr){
         res = new;
         expr++;
     }
+    return res;
+}
+
+char* strip(char* str){
+    if (str == NULL){
+        return NULL;
+    }
+    char* res = new_empty_str();
+    if (res == NULL){
+        return NULL;
+    }
+    while(*(str) != '\0'){
+        if (*(str) != ' '){
+            char* new = str_add(res, *(str));
+            if (new == NULL){
+                free(res);
+                return NULL;
+            }
+            res = new;
+        }
+        str++;
+    }
+    return res;
+}
+
+char* char_to_str(char c){
+    char* res = malloc(2 * sizeof(char));
+    if (res == NULL){
+        return NULL;
+    }
+
+    res[0] = c;
+    res[1] = '\0';
+
     return res;
 }
