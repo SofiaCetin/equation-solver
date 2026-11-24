@@ -47,7 +47,9 @@ typedef struct TokenCell* List;
 
 
 List new_list(void);
+int isListEmpty(List l);
 void append(List l, char* value, Token type);
 void show_list(List l);
+void delete_list(List* l);
 
 #endif
