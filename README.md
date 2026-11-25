@@ -2,7 +2,7 @@
 
 ## Introduction
 
-This program written with C aims at solving equations of different types(quadratic, polynomial/linear, etc...). It is presented as a symbolic engine that parses and determine the best way to solve the equation based on its type. Here are the steps of the algorithm explained as briefly as possible:
+This program written in C aims at solving equations of different types(quadratic, polynomial/linear, etc...). It is presented as a symbolic engine that parses and determine the best way to solve the equation based on its type. Here are the steps of the algorithm explained as briefly as possible:
 
 ### Dependencies
 
