@@ -1,4 +1,6 @@
 #include "list.h"
+#include <stdlib.h>
+#include <stdio.h>
 
 List new_list(void){
     List l;
@@ -6,6 +8,8 @@ List new_list(void){
     if (l == NULL){
         return NULL;
     }
+    l->type = 0;
+    l->value = NULL;
     l->next = l;
     l->prev = l;
     return l;
@@ -49,8 +53,25 @@ void show_list(List l){
         printf("%s(%u), ", actual->value, actual->type);
         actual = actual->next;
     }
-    printf("%s(%u)]", actual->value, actual->type);
+    printf("%s(%u)]\n", actual->value, actual->type);
 };
+
+void delete_element(struct TokenCell* element){
+    if (element == NULL){
+        return;
+    }
+
+    struct TokenCell* next = element->next;
+    struct TokenCell* prev = element->prev;
+    if (next == NULL && prev == NULL){
+        free(element);
+        return;
+    }
+    prev->next = next;
+    next->prev = prev;
+    free(element);
+    element = NULL;
+}
 
 void delete_list(List* l){
     if (l == NULL){

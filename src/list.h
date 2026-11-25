@@ -1,9 +1,6 @@
 #ifndef LIST_H
 #define LIST_H
 
-#include <stdlib.h>
-#include <stdio.h>
-
 typedef enum {
 
     /*
@@ -51,5 +48,6 @@ int isListEmpty(List l);
 void append(List l, char* value, Token type);
 void show_list(List l);
 void delete_list(List* l);
+void delete_element(struct TokenCell* element);
 
 #endif
