@@ -15,5 +15,6 @@ char* str_add(char *dest, char c);
 // char* detect_number(const char* expr);
 char* char_to_str(char c);
 char* strip(char* str);
+char str_to_char(char* str);
 
 #endif

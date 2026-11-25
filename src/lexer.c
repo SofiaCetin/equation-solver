@@ -64,15 +64,29 @@ void tokenization(List l){
 
         /* Test for numbers */
         if (actual->type == 1){
-            printf("detected: %d numbers starting at %s\n", detect_number(actual), actual->value);
+            int step = detect_number(actual);
+            if (step >= 2){
+                struct TokenCell* actual2 = actual->next;
+                for (; step != 1 ;step--){
+                    actual->value = str_add(actual->value, str_to_char(actual2->value));
+                    struct TokenCell* next = actual2->next;
+                    delete_element(actual2);
+                    actual2 = next;
+                }
+            }
+            actual = actual->next;
         }
-        actual = actual->next;
+        else{
+            actual = actual->next;
+        }
     }
 }
 
 int detect_number(struct TokenCell* element){
-    /* no digits should return 0, a single digit should return 1,
-    then a number of n digits should return n */
+    /* one digit should return 1, 
+    a number of n digits after should return n.
+    basically tolds the tokenization function how many digits
+    to group with the first digit */
 
     if (element == NULL){
         return -1;
@@ -81,7 +95,7 @@ int detect_number(struct TokenCell* element){
     int res = 0;
 
     struct TokenCell* actual = element;
-    while(actual->type == 1){
+    while(actual != NULL && actual->type == 1){
         res++;
         actual = actual->next;
     }
@@ -90,7 +104,7 @@ int detect_number(struct TokenCell* element){
 }
 
 int main(void){
-    List test = pre_tokenization("255x+b5");
+    List test = pre_tokenization("255x+");
     if (test == NULL){
         return 1;
     }

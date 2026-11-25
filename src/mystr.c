@@ -55,7 +55,7 @@ size_t str_len(const char* s){
     return i;
 }
 
-char* str_add(char *dest, char c){
+char* str_add(char* dest, const char c){
     if (dest == NULL){
         return NULL;
     }
@@ -126,5 +126,11 @@ char* char_to_str(char c){
     res[0] = c;
     res[1] = '\0';
 
+    return res;
+}
+
+char str_to_char(char* str){
+    char res = str[0];
+    free(str);
     return res;
 }
