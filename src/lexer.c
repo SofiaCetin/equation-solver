@@ -1,4 +1,7 @@
 #include "lexer.h"
+#include "mystr.h"
+#include <stdio.h>
+#include "math_lib.h"
 
 Token pre_token_type(char c){
 
@@ -51,13 +54,48 @@ List pre_tokenization(char* expr){
     return res;
 }
 
+void tokenization(List l){
+    if (l == NULL || isListEmpty(l)){
+        return;
+    }
+
+    struct TokenCell* actual = l->next;
+    while (actual != l){
+
+        /* Test for numbers */
+        if (actual->type == 1){
+            printf("detected: %d numbers starting at %s\n", detect_number(actual), actual->value);
+        }
+        actual = actual->next;
+    }
+}
+
+int detect_number(struct TokenCell* element){
+    /* no digits should return 0, a single digit should return 1,
+    then a number of n digits should return n */
+
+    if (element == NULL){
+        return -1;
+    }
+
+    int res = 0;
+
+    struct TokenCell* actual = element;
+    while(actual->type == 1){
+        res++;
+        actual = actual->next;
+    }
+
+    return res;
+}
+
 int main(void){
-    List test = pre_tokenization("ax+b");
+    List test = pre_tokenization("255x+b5");
     if (test == NULL){
         return 1;
     }
     show_list(test);
-    char* test3 = strip("b o njour");
-    printf("%s", test3);
+    tokenization(test);
+    show_list(test);
     return 0;
 }
