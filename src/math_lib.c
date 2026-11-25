@@ -1,4 +1,5 @@
 #include "math_lib.h"
+#include <math.h>
 
 /* cf before every math function here stands for
 converted function prototype. Instead of directly

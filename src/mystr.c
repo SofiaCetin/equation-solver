@@ -1,4 +1,5 @@
 #include "mystr.h"
+#include <stdlib.h>
 
 const char NUMBERS[] = ".0123456789";
 const char ALPHABET[] = "abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ";
@@ -70,6 +71,7 @@ char* str_add(char *dest, char c){
     return res;
 }
 
+/* Don't think we need this function anymore. Will prob delete that later
 char* detect_number(const char* expr){
     if (expr == NULL){
         return NULL;
@@ -91,6 +93,7 @@ char* detect_number(const char* expr){
     }
     return res;
 }
+*/
 
 char* strip(char* str){
     if (str == NULL){

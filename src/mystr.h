@@ -2,7 +2,6 @@
 #define MYSTR_H_
 
 #include <stdio.h>
-#include <stdlib.h>
 
 extern const char NUMBERS[];
 extern const char ALPHABET[];
@@ -13,7 +12,7 @@ int count_char(const char* s, char c);
 int any_c_in(const char* str, const char* input);
 size_t str_len(const char* s);
 char* str_add(char *dest, char c);
-char* detect_number(const char* expr);
+// char* detect_number(const char* expr);
 char* char_to_str(char c);
 char* strip(char* str);
 
