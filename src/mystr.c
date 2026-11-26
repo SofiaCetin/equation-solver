@@ -3,7 +3,7 @@
 
 const char NUMBERS[] = ".0123456789";
 const char ALPHABET[] = "abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ";
-const char OPERANDS[] = "+-*/";
+const char OPERANDS[] = "+-*/=";
 
 char* new_empty_str(void){
     char* res = malloc(sizeof(char));
@@ -15,7 +15,7 @@ char* new_empty_str(void){
 }
 int count_char(const char* s, char c){
     if (s == NULL){
-        return 1;
+        return -1;
     }
     int res = 0;
     while(*s != '\0'){
@@ -29,19 +29,19 @@ int count_char(const char* s, char c){
 
 int any_c_in(const char* str, const char* input){
     if (str == NULL || input == NULL){
-        return 1;
+        return 0;
     }
     size_t i;
     size_t len = str_len(str);
     while(*input != '\0'){
-        for(i = 0; i < len - 1; i++){
+        for(i = 0; i < len; i++){
             if (*(str + i) == *input){
-                return 0;
+                return 1;
             }
         }
         input++;
     }
-    return 1;
+    return 0;
 }
 
 
@@ -133,4 +133,37 @@ char str_to_char(char* str){
     char res = str[0];
     free(str);
     return res;
+}
+
+int search_for_pattern(const char* str, const char* input){
+    if (str == NULL || input == NULL){
+        return -1;
+    }
+
+    size_t input_len = str_len(input);
+    int res_switch = 0;
+    if (input_len == 1){
+        return any_c_in(str, input);
+    }
+
+    for(size_t i = 0; i <= str_len(str) - input_len; i++){
+        if (*(str + i) == *input){
+            res_switch = 1;
+            for (size_t k = 0; k < input_len; k++){
+                if (*(str + i + k) != *(input + k)){
+                    res_switch = 0;
+                    break;
+                }
+            }
+
+            if (res_switch){
+                return 1;
+            }
+        }
+    }
+    return 0;
+}
+
+int hasOneEqualSymbol(char* str){
+    return count_char(str, '=') == 1;
 }
