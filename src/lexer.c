@@ -2,6 +2,7 @@
 #include "mystr.h"
 #include <stdio.h>
 #include "math_lib.h"
+#include <unistd.h>
 
 Token pre_token_type(char c){
 
@@ -27,7 +28,7 @@ Token pre_token_type(char c){
 }
 
 List pre_tokenization(char* expr){
-    if (expr == NULL || str_len(expr) < 1){
+    if (expr == NULL || str_len(expr) < 1 || !hasOneEqualSymbol(expr)){
         return NULL;
     }
 
@@ -62,22 +63,34 @@ void tokenization(List l){
     struct TokenCell* actual = l->next;
     while (actual != l){
 
-        /* Test for numbers */
-        if (actual->type == 1){
-            int step = detect_number(actual);
-            if (step >= 2){
-                struct TokenCell* actual2 = actual->next;
-                for (; step != 1 ;step--){
-                    actual->value = str_add(actual->value, str_to_char(actual2->value));
-                    struct TokenCell* next = actual2->next;
-                    delete_element(actual2);
-                    actual2 = next;
-                }
+        switch(actual->type){
+
+            case 0: {
+                
             }
-            actual = actual->next;
-        }
-        else{
-            actual = actual->next;
+
+            case 1: {
+                // Test for numbers
+                int step = detect_number(actual);
+                if (step >= 2){
+                    struct TokenCell* actual2 = actual->next;
+                    for (; step != 1 ;step--){
+                        actual->value = str_add(actual->value, str_to_char(actual2->value));
+                        struct TokenCell* next = actual2->next;
+                        delete_element(actual2);
+                        actual2 = next;
+                    }
+                }
+                actual = actual->next;
+            }
+
+            case 2: {
+
+            }
+
+            default:
+
+            return;
         }
     }
 }
@@ -93,7 +106,6 @@ int detect_number(struct TokenCell* element){
     }
 
     int res = 0;
-
     struct TokenCell* actual = element;
     while(actual != NULL && actual->type == 1){
         res++;
@@ -103,13 +115,24 @@ int detect_number(struct TokenCell* element){
     return res;
 }
 
+void keep_alive(void)
+{
+    while (1)
+    {
+        sleep(1);
+    }
+}
+
 int main(void){
-    List test = pre_tokenization("255x+");
+    List test = pre_tokenization(strip("120 + x + 2x = 3"));
     if (test == NULL){
+        printf("Error: main returned 1");
         return 1;
     }
     show_list(test);
     tokenization(test);
     show_list(test);
+    delete_list(test);
+    getchar();
     return 0;
 }
