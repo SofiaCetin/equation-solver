@@ -5,6 +5,7 @@
 #include "math_lib.h"
 #include <unistd.h>
 
+
 Token pre_token_type(char c){
 
     if (count_char(OPERANDS,c) > 0){
@@ -58,6 +59,7 @@ List pre_tokenization(char* expr){
 
 void tokenization(List l){
     if (l == NULL || isListEmpty(l)){
+        ERROR("Liste null ou vide");
         return;
     }
 
@@ -66,48 +68,35 @@ void tokenization(List l){
 
         if (current->type == 0){
             // Check for undefined chars/symbols (ex: "2x+5$" is wrong)
-            printf("Error: %s is undefined", current->value);
+            ERROR("Caractère non défini");
             delete_list(&l);
             exit(1);
         }
 
-        if (current->type == 1){
-            // Conversion from separated digits to whole numbers
-            int step = detect_number(current);
-            if (step >= 2){
-                struct TokenCell* current2 = current->next;
-                for (; step != 1 ;step--){
-                    current->value = str_add(current->value, str_to_char(current2->value));
-                    struct TokenCell* next = current2->next;
-                    delete_element(current2);
-                    current2 = next;
-                }
-                current = current2;
-                continue;
-            }
-        }
-
-        if (current->type == 2){
-
+        int steps = detect_same_type(current);
+        if (steps > 1){
+            current = group_same_type(current, steps);
+            continue;
         }
 
         current = current->next;
     }
 }
 
-int detect_number(struct TokenCell* element){
+int detect_same_type(struct TokenCell* element){
     /* one digit should return 1, 
     a number of n digits after should return n.
     basically tolds the tokenization function how many digits
     to group with the first digit */
 
     if (element == NULL){
+        ERROR("Element null");
         return -1;
     }
 
     int res = 0;
     struct TokenCell* current = element;
-    while(current != NULL && current->type == 1){
+    while(current != NULL && current->type == element->type){
         res++;
         current = current->next;
     }
@@ -115,10 +104,26 @@ int detect_number(struct TokenCell* element){
     return res;
 }
 
+struct TokenCell* group_same_type(struct TokenCell* element, int steps){
+    if (element == NULL){
+        ERROR("Element null");
+        return NULL;
+    }
+
+    struct TokenCell* current = element->next;
+    for (; steps > 1 ;steps--){
+        element->value = str_add(element->value, *current->value);
+        struct TokenCell* next = current->next;
+        delete_element(current);
+        current = next;
+    }
+    return current;
+}
+
 int main(void){
-    List test = pre_tokenization(strip("120 + x + 2x = 3"));
+    List test = pre_tokenization(strip("120 +- abx + 2x = 3"));
     if (test == NULL){
-        printf("Error: main returned 1");
+        ERROR("Liste nulle");
         return 1;
     }
     show_list(test);
