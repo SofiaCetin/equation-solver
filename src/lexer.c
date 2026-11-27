@@ -85,10 +85,10 @@ void tokenization(List l){
 }
 
 int detect_same_type(struct TokenCell* element){
-    /* one digit should return 1, 
-    a number of n digits after should return n.
-    basically tolds the tokenization function how many digits
-    to group with the first digit */
+    /* one char after should return 1, 
+    a number of n chars after should return n.
+    basically tolds the tokenization function how many chars
+    to group with the first char */
 
     if (element == NULL){
         ERROR("Element null");
@@ -106,6 +106,7 @@ int detect_same_type(struct TokenCell* element){
 }
 
 struct TokenCell* group_same_type(struct TokenCell* element, int steps){
+    // Group a successive type into one char
     if (element == NULL){
         ERROR("Element null");
         return NULL;
