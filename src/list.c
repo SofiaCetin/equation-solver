@@ -47,13 +47,13 @@ void show_list(List l){
         return;
     }
 
-    struct TokenCell* actual = l->next;
+    struct TokenCell* current = l->next;
     printf("[");
-    while (actual->next != l){
-        printf("%s(%u), ", actual->value, actual->type);
-        actual = actual->next;
+    while (current->next != l){
+        printf("%s(%u), ", current->value, current->type);
+        current = current->next;
     }
-    printf("%s(%u)]\n", actual->value, actual->type);
+    printf("%s(%u)]\n", current->value, current->type);
 };
 
 void delete_element(struct TokenCell* element){
@@ -77,11 +77,11 @@ void delete_list(List* l){
     if (l == NULL){
         return;
     }
-    struct TokenCell* actual = (*l)->next;
-    while (actual != *l){
-        struct TokenCell* next = actual->next;
-        free(actual);
-        actual = next;
+    struct TokenCell* current = (*l)->next;
+    while (current != *l){
+        struct TokenCell* next = current->next;
+        free(current);
+        current = next;
     }
     free(*l);
     *l = NULL;

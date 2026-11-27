@@ -61,37 +61,37 @@ void tokenization(List l){
         return;
     }
 
-    struct TokenCell* actual = l->next;
-    while (actual != l){
+    struct TokenCell* current = l->next;
+    while (current != l){
 
-        if (actual->type == 0){
+        if (current->type == 0){
             // Check for undefined chars/symbols (ex: "2x+5$" is wrong)
-            printf("Error: %s is undefined", actual->value);
+            printf("Error: %s is undefined", current->value);
             delete_list(&l);
             exit(1);
         }
 
-        if (actual->type == 1){
+        if (current->type == 1){
             // Conversion from separated digits to whole numbers
-            int step = detect_number(actual);
+            int step = detect_number(current);
             if (step >= 2){
-                struct TokenCell* actual2 = actual->next;
+                struct TokenCell* current2 = current->next;
                 for (; step != 1 ;step--){
-                    actual->value = str_add(actual->value, str_to_char(actual2->value));
-                    struct TokenCell* next = actual2->next;
-                    delete_element(actual2);
-                    actual2 = next;
+                    current->value = str_add(current->value, str_to_char(current2->value));
+                    struct TokenCell* next = current2->next;
+                    delete_element(current2);
+                    current2 = next;
                 }
-                actual = actual2;
+                current = current2;
                 continue;
             }
         }
 
-        if (actual->type == 2){
+        if (current->type == 2){
 
         }
 
-        actual = actual->next;
+        current = current->next;
     }
 }
 
@@ -106,10 +106,10 @@ int detect_number(struct TokenCell* element){
     }
 
     int res = 0;
-    struct TokenCell* actual = element;
-    while(actual != NULL && actual->type == 1){
+    struct TokenCell* current = element;
+    while(current != NULL && current->type == 1){
         res++;
-        actual = actual->next;
+        current = current->next;
     }
 
     return res;
