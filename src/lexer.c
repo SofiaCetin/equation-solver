@@ -1,6 +1,7 @@
 #include "lexer.h"
 #include "mystr.h"
 #include <stdio.h>
+#include <stdlib.h>
 #include "math_lib.h"
 #include <unistd.h>
 
@@ -63,35 +64,34 @@ void tokenization(List l){
     struct TokenCell* actual = l->next;
     while (actual != l){
 
-        switch(actual->type){
-
-            case 0: {
-                
-            }
-
-            case 1: {
-                // Test for numbers
-                int step = detect_number(actual);
-                if (step >= 2){
-                    struct TokenCell* actual2 = actual->next;
-                    for (; step != 1 ;step--){
-                        actual->value = str_add(actual->value, str_to_char(actual2->value));
-                        struct TokenCell* next = actual2->next;
-                        delete_element(actual2);
-                        actual2 = next;
-                    }
-                }
-                actual = actual->next;
-            }
-
-            case 2: {
-
-            }
-
-            default:
-
-            return;
+        if (actual->type == 0){
+            // Check for undefined chars/symbols (ex: "2x+5$" is wrong)
+            printf("Error: %s is undefined", actual->value);
+            delete_list(&l);
+            exit(1);
         }
+
+        if (actual->type == 1){
+            // Conversion from separated digits to whole numbers
+            int step = detect_number(actual);
+            if (step >= 2){
+                struct TokenCell* actual2 = actual->next;
+                for (; step != 1 ;step--){
+                    actual->value = str_add(actual->value, str_to_char(actual2->value));
+                    struct TokenCell* next = actual2->next;
+                    delete_element(actual2);
+                    actual2 = next;
+                }
+                actual = actual2;
+                continue;
+            }
+        }
+
+        if (actual->type == 2){
+
+        }
+
+        actual = actual->next;
     }
 }
 
@@ -115,14 +115,6 @@ int detect_number(struct TokenCell* element){
     return res;
 }
 
-void keep_alive(void)
-{
-    while (1)
-    {
-        sleep(1);
-    }
-}
-
 int main(void){
     List test = pre_tokenization(strip("120 + x + 2x = 3"));
     if (test == NULL){
@@ -132,7 +124,7 @@ int main(void){
     show_list(test);
     tokenization(test);
     show_list(test);
-    delete_list(test);
+    delete_list(&test);
     getchar();
     return 0;
 }
