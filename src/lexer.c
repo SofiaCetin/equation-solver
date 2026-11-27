@@ -73,6 +73,7 @@ void tokenization(List l){
             exit(1);
         }
 
+        // Search for successive types and group them to make the parsing easier
         int steps = detect_same_type(current);
         if (steps > 1){
             current = group_same_type(current, steps);
